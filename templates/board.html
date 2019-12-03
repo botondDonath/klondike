@@ -1,8 +1,19 @@
 <div id="board">
     <div id="board-header">
-        This is the board header
+        <div id="board-header-left">
+            <div id="unflipped"></div>
+            <div id="flipped"></div>
+        </div>
+        <div id="board-header-right">
+            <div class="sorted-pile"></div>
+            <div class="sorted-pile"></div>
+            <div class="sorted-pile"></div>
+            <div class="sorted-pile"></div>
+        </div>
     </div>
     <div id="board-content">
-        This is the board content
+        {% for _ in range(7) %}
+            <div class="column"></div>
+        {% endfor %}
     </div>
 </div>

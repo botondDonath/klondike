@@ -25,15 +25,49 @@ body {
 #board {
     border: black solid 2px;
     width: 1600px;
-    height: 700px;
+    height: 750px;
     margin: 20px auto;
     padding: 20px;
 }
 
 #board-header {
-    border: black solid 2px;
+    display: flex;
+    justify-content: space-between;
+    height: 150px;
+}
+
+#board-header-right, #board-header-left {
+    display: flex;
+    justify-content: space-between;
+}
+
+#board-header-left {
+    width: 330px;
+}
+
+#board-header-right {
+    width: 700px;
+}
+
+#unflipped, #flipped {
+    border: black solid 1px;
+    width: 120px;
+}
+
+.sorted-pile {
+    border: black solid 1px;
+    width: 120px;
 }
 
 #board-content {
     border: black solid 2px;
+    margin-top: 30px;
+    height: 550px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    width: 120px;
+    border: black solid 1px;
 }
