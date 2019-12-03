@@ -24,7 +24,7 @@ body {
 
 #board {
     border: black solid 2px;
-    width: 1600px;
+    width: 1500px;
     height: 750px;
     margin: 20px auto;
     padding: 20px;
@@ -36,31 +36,19 @@ body {
     height: 150px;
 }
 
-#board-header-right, #board-header-left {
-    display: flex;
-    justify-content: space-between;
-}
-
-#board-header-left {
-    width: 330px;
-}
-
-#board-header-right {
-    width: 700px;
-}
-
-#unflipped, #flipped {
-    border: black solid 1px;
+#unflipped, #flipped, #invisible {
     width: 120px;
 }
 
+#invisible {
+    visibility: hidden;
+}
+
 .sorted-pile {
-    border: black solid 1px;
     width: 120px;
 }
 
 #board-content {
-    border: black solid 2px;
     margin-top: 30px;
     height: 550px;
     display: flex;
@@ -69,7 +57,7 @@ body {
 
 .column {
     width: 120px;
-    border: black solid 1px;
+    position: relative;
 }
 
 #unflipped {
@@ -84,16 +72,27 @@ body {
     left: 0;
 }
 
-.card {
+.card, .empty-slot {
     box-sizing: border-box;
     height: 150px;
     width: 120px;
+    border-radius: 10px;
+}
+
+.empty-slot {
+    background: rgba(0, 0, 0, .2);
+    position: absolute;
+    z-index: -1;
+}
+
+.card {
     border: black solid 3px;
     background: white;
+    padding-top: 10px;
 }
 
 .column .card {
-    margin-bottom: -120px;
+    margin-bottom: -110px;
 }
 
 .card-header {

@@ -1,19 +1,23 @@
 <div id="board">
     <div id="board-header">
-        <div id="board-header-left">
-            <div id="unflipped"></div>
-            <div id="flipped"></div>
+        <div id="unflipped">
+            <div class="empty-slot"></div>
         </div>
-        <div id="board-header-right">
-            <div class="sorted-pile"></div>
-            <div class="sorted-pile"></div>
-            <div class="sorted-pile"></div>
-            <div class="sorted-pile"></div>
+        <div id="flipped">
+            <div class="empty-slot"></div>
         </div>
+        <div id="invisible"></div>
+        {% for _ in range(4) %}
+            <div class="sorted-pile">
+                <div class="empty-slot"></div>
+            </div>
+        {% endfor %}
     </div>
     <div id="board-content">
         {% for _ in range(7) %}
-            <div class="column"></div>
+            <div class="column">
+                <div class="empty-slot"></div>
+            </div>
         {% endfor %}
     </div>
 </div>
