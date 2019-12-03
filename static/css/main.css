@@ -72,7 +72,7 @@ body {
     border: black solid 1px;
 }
 
-.card {
+.column .card {
     height: 150px;
     margin-bottom: -120px;
     border: darkgoldenrod solid 3px;

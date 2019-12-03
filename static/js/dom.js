@@ -42,6 +42,7 @@ export const dom = {
                     columns[col].appendChild(card);
                 }
             }
+            const unflippedPile = document.getElementById('unflipped');
 
         }
     }
