@@ -1,0 +1,39 @@
+:root {
+    --green: rgb(74,153,83);
+    --light-green: rgb(191, 203, 147);
+}
+
+body {
+    margin: 0;
+    background-color: var(--light-green);
+}
+
+#page-header {
+    height: 80px;
+    background-color: var(--green);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#app-name {
+    margin-left: 30px;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+#board {
+    border: black solid 2px;
+    width: 1600px;
+    height: 700px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#board-header {
+    border: black solid 2px;
+}
+
+#board-content {
+    border: black solid 2px;
+}
