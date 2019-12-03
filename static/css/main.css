@@ -72,11 +72,28 @@ body {
     border: black solid 1px;
 }
 
-.column .card {
+#unflipped {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+#unflipped .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card {
+    box-sizing: border-box;
     height: 150px;
-    margin-bottom: -120px;
+    width: 120px;
     border: darkgoldenrod solid 3px;
     background: white;
+}
+
+.column .card {
+    margin-bottom: -120px;
 }
 
 .card-header {

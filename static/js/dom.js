@@ -43,7 +43,11 @@ export const dom = {
                 }
             }
             const unflippedPile = document.getElementById('unflipped');
-
+            let zIndex = 1;
+            for (const card of deck) {
+                card.style.zIndex = (zIndex++).toString();
+                unflippedPile.appendChild(card);
+            }
         }
     }
 };
