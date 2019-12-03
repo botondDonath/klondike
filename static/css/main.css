@@ -71,3 +71,10 @@ body {
     width: 120px;
     border: black solid 1px;
 }
+
+.card {
+    height: 150px;
+    margin-bottom: -120px;
+    border: darkgoldenrod solid 3px;
+    background: white;
+}
