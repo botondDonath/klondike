@@ -7,27 +7,24 @@ export const dom = {
     deck: {
         init: function () {
             const deck = this.generate();
-            for (const card of deck) {
-                const cardElement = this.createCard();
-                cardElement.dataset.suit = card.suit;
-                cardElement.dataset.rank = card.rank;
-                deck[deck.indexOf(card)] = cardElement;
-            }
         },
         generate: function () {
             let deck = [];
             const suits = ['spades', 'clubs', 'hearts', 'diamonds'];
             for (const suit of suits) {
                 for (let rank = 1; rank <= 13; rank++) {
-                    deck.push({suit: suit, rank: rank})
+                    const card = this.createCard(suit, rank);
+                    deck.push(card);
                 }
             }
             util.shuffle(deck);
             return deck
         },
-        createCard: function () {
+        createCard: function (suit, rank) {
             const card = document.createElement('DIV');
             card.classList.add('card');
+            card.dataset.suit = suit;
+            card.dataset.rank = rank.toString();
             return card;
         }
     }
