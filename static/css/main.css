@@ -1,6 +1,7 @@
 :root {
     --primary: rgb(20, 50, 140);
     --secondary: rgb(195, 200, 255);
+    --primary-opaque: rgba(20, 50, 140, .2);
 }
 
 body {
@@ -23,11 +24,12 @@ body {
 }
 
 #board {
-    border: black solid 2px;
+    border: black solid 3px;
+    border-radius: 20px;
     width: 1500px;
     height: 750px;
     margin: 20px auto;
-    padding: 20px;
+    padding: 24px;
 }
 
 #board-header {
@@ -80,7 +82,7 @@ body {
 }
 
 .empty-slot {
-    background: rgba(0, 0, 0, .2);
+    background: var(--primary-opaque);
     position: absolute;
     z-index: -1;
 }
@@ -99,7 +101,7 @@ body {
 }
 
 .column .card {
-    margin-bottom: -110px;
+    margin-bottom: -130px;
 }
 
 .card-header {
@@ -117,6 +119,10 @@ body {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+}
+
+.rank-label {
+    font-weight: bold;
 }
 
 .spades {
