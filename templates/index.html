@@ -3,4 +3,12 @@
 {% block content %}
     {% include 'page-header.html' %}
     {% include 'board.html' %}
+    <template id="card-template">
+        <div class="card">
+            <div class="card-header">
+                <div class="suit-label"></div>
+                <div class="rank-label"></div>
+            </div>
+        </div>
+    </template>
 {% endblock %}

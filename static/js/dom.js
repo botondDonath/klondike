@@ -22,14 +22,16 @@ export const dom = {
             return deck
         },
         createCard: function (suit, rank) {
-            const card = document.createElement('DIV');
+            let card = document.getElementById('card-template');
+            card = document.importNode(card, true);
+            const cardContainer = document.createElement('DIV');
+            cardContainer.innerHTML = card.innerHTML;
+            card = cardContainer.querySelector('.card');
             card.classList.add('card', 'unflipped');
             card.dataset.suit = suit;
             card.dataset.rank = rank.toString();
-            const cardHeader = document.createElement('DIV');
-            cardHeader.classList.add('card-header');
-            cardHeader.textContent = `${suit} ${rank}`;
-            card.appendChild(cardHeader);
+            card.querySelector('.suit-label').classList.add(suit);
+            card.querySelector('.rank-label').textContent = rank;
             return card;
         },
         display: function (deck) {

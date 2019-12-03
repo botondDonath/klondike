@@ -1,16 +1,16 @@
 :root {
-    --green: rgb(74,153,83);
-    --light-green: rgb(191, 203, 147);
+    --primary: rgb(20, 50, 140);
+    --secondary: rgb(195, 200, 255);
 }
 
 body {
     margin: 0;
-    background-color: var(--light-green);
+    background-color: var(--secondary);
 }
 
 #page-header {
     height: 80px;
-    background-color: var(--green);
+    background-color: var(--primary);
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -74,7 +74,7 @@ body {
 
 .card, .empty-slot {
     box-sizing: border-box;
-    height: 150px;
+    height: 170px;
     width: 120px;
     border-radius: 10px;
 }
@@ -91,14 +91,46 @@ body {
     padding-top: 10px;
 }
 
+.unflipped {
+    background-image: url("../images/card-back.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-color: black;
+}
+
 .column .card {
     margin-bottom: -110px;
 }
 
 .card-header {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
 }
 
 .unflipped .card-header {
     visibility: hidden;
+}
+
+.suit-label {
+    width: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.spades {
+    background-image: url("../images/spades.png");
+}
+
+.clubs {
+    background-image: url("../images/clubs.png");
+}
+
+.hearts {
+    background-image: url("../images/hearts.png");
+}
+
+.diamonds {
+    background-image: url("../images/diamonds.png");
 }
