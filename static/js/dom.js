@@ -31,6 +31,20 @@ export const dom = {
             card.dataset.suit = suit;
             card.dataset.rank = rank.toString();
             card.querySelector('.suit-label').classList.add(suit);
+            switch (rank) {
+                case 1:
+                    rank = 'A';
+                    break;
+                case 11:
+                    rank = 'J';
+                    break;
+                case 12:
+                    rank = 'Q';
+                    break;
+                case 13:
+                    rank = 'K';
+                    break;
+            }
             card.querySelector('.rank-label').textContent = rank;
             return card;
         },
