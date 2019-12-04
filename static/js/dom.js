@@ -75,13 +75,13 @@ export const dom = {
                     // console.log(flippedDeck);
                     let suit = flippedCard.dataset.suit;
                     let rank = flippedCard.dataset.rank;
-                    const cardHeader = document.createElement('DIV');
-                    cardHeader.classList.add('card-header');
-                    cardHeader.textContent = `${suit} ${rank}`;
-
-
+                    if (flippedCard.hasChildNodes() === false) {
+                        const cardHeader = document.createElement('DIV');
+                        cardHeader.classList.add('card-header');
+                        cardHeader.textContent = `${suit} ${rank}`;
+                        flippedCard.appendChild(cardHeader);
+                    }
                 }
-
             });
 
 
