@@ -55,10 +55,12 @@ body {
     height: 550px;
     display: flex;
     justify-content: space-between;
+    align-items: start;
 }
 
 .column {
     width: 120px;
+    max-height: 550px;
     position: relative;
 }
 
@@ -102,6 +104,10 @@ body {
 
 .column .card {
     margin-bottom: -130px;
+}
+
+.column .card:last-child {
+    margin-bottom: 0;
 }
 
 .card-header {
