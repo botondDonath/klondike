@@ -100,6 +100,9 @@ export const dom = {
                     let flippedCard = unflippedDeck.lastChild;
                     flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
                     util.flipCard(flippedDeck, flippedCard);
+                    if (!unflippedDeck.querySelector('.card')) {
+                        zIndexFlippedCards = 0;
+                    }
                 }
             });
         },
