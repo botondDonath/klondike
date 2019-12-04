@@ -69,6 +69,23 @@ export const dom = {
         }
     },
     drag: {
+        mouse: {
+            x: null,
+            y: null,
+            set coords(mouseEvent) {
+                this.x = mouseEvent.clientX;
+                this.y = mouseEvent.clientY;
+            },
+            getVector: function (mouseEvent) {
+                const oldX = this.x;
+                const oldY = this.y;
+                this.coords = mouseEvent;
+                return {
+                    dx: this.x - oldX,
+                    dy: this.y - oldY
+                }
+            }
+        },
         init: function () {
             Array.from(document.getElementsByClassName('card'))
                 .forEach(function (card) {
@@ -159,23 +176,6 @@ export const dom = {
                 .forEach(target => {
                     target.classList.remove('target', 'active');
                 })
-        },
-        mouse: {
-            x: null,
-            y: null,
-            set coords(mouseEvent) {
-                this.x = mouseEvent.clientX;
-                this.y = mouseEvent.clientY;
-            },
-            getVector: function (mouseEvent) {
-                const oldX = this.x;
-                const oldY = this.y;
-                this.coords = mouseEvent;
-                return {
-                    dx: this.x - oldX,
-                    dy: this.y - oldY
-                }
-            }
         },
     }
 };
