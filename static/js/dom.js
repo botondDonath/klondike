@@ -110,23 +110,6 @@ export const dom = {
                     target.classList.add('target');
                 });
         },
-        start: function (event) {
-            event.preventDefault();
-            const card = event.target;
-            if (!card.classList.contains('unflipped')) {
-                card.classList.add('dragged');
-                dom.drag.prepareTargets({
-                    color: card.dataset.color,
-                    rank: parseInt(card.dataset.rank)
-                });
-                const clone = dom.drag.createClone(card);
-                this.mouse.coords = event;
-                document.onmousemove = dom.drag.move.bind(clone);
-                document.onmouseup = dom.drag.end.bind(clone);
-                document.body.appendChild(clone);
-                card.style.opacity = '70%';
-            }
-        },
         detectTarget: function (clone) {
             let targetBelow;
             const corners = util.getCorners(clone);
@@ -153,6 +136,23 @@ export const dom = {
             } else if (!targetCardBelow && clone.classList.contains('over')) {
                 document.querySelector('.active').classList.remove('active');
                 clone.classList.remove('over');
+            }
+        },
+        start: function (event) {
+            event.preventDefault();
+            const card = event.target;
+            if (!card.classList.contains('unflipped')) {
+                card.classList.add('dragged');
+                dom.drag.prepareTargets({
+                    color: card.dataset.color,
+                    rank: parseInt(card.dataset.rank)
+                });
+                const clone = dom.drag.createClone(card);
+                this.mouse.coords = event;
+                document.onmousemove = dom.drag.move.bind(clone);
+                document.onmouseup = dom.drag.end.bind(clone);
+                document.body.appendChild(clone);
+                card.style.opacity = '70%';
             }
         },
         move: function (event) {
