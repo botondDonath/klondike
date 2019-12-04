@@ -1,0 +1,47 @@
+.card, .card-clone, .empty-slot {
+    box-sizing: border-box;
+    height: 170px;
+    width: 120px;
+    border-radius: 10px;
+}
+
+.card, .card-clone {
+    border: black solid 3px;
+    background: white;
+    padding-top: 10px;
+}
+
+.card-clone {
+    z-index: 999;
+}
+
+.empty-slot {
+    background: var(--primary-opaque);
+    position: absolute;
+    z-index: -1;
+}
+
+#unflipped .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.column .card {
+    margin-bottom: -130px;
+}
+
+.column .card:last-child {
+    margin-bottom: 0;
+}
+
+.unflipped {
+    background-image: url("../images/card-back.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-color: black;
+}
+
+.active {
+    border-color: #cc0001;
+}

@@ -1,0 +1,5 @@
+:root {
+    --primary: rgb(20, 50, 140);
+    --secondary: rgb(195, 200, 255);
+    --primary-opaque: rgba(20, 50, 140, .2);
+}
