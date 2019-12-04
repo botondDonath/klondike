@@ -56,16 +56,13 @@ export const dom = {
         let unflippedDeck = document.getElementById('unflipped');
         let flippedDeck = document.getElementById('flipped');
         let unflippedCards = unflippedDeck.getElementsByClassName('unflipped card');
-        console.log(unflippedDeck);
+
 
         let zIndexFlippedCards = 0;
-        if (unflippedDeck.hasChildNodes()) {
-            for (let unflippedCard of unflippedCards) {
-                unflippedCard.addEventListener('click', function (event) {
-                console.log('2');
-                    // console.log(unflippedDeck);
+            unflippedDeck.addEventListener('click', function (event) {
+                if (unflippedDeck.hasChildNodes()) {
+                    let flippedCard = unflippedDeck.lastChild;
 
-                    let flippedCard = event.currentTarget;
                     flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
                     //remove flipped card from unflipped deck
                     flippedCard.remove();
@@ -81,10 +78,39 @@ export const dom = {
                     const cardHeader = document.createElement('DIV');
                     cardHeader.classList.add('card-header');
                     cardHeader.textContent = `${suit} ${rank}`;
-                })
-            }
 
-        }
+
+                }
+
+            });
+
+
+
+            // for (let unflippedCard of unflippedCards) {
+            //     unflippedCard.addEventListener('click', function (event) {
+            //     console.log('2');
+            //         // console.log(unflippedDeck);
+            //
+            //         let flippedCard = event.currentTarget;
+            //         flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
+            //         //remove flipped card from unflipped deck
+            //         flippedCard.remove();
+            //         flippedCard.classList.remove('unflipped');
+            //         flippedCard.classList.add('flipped');
+            //         // console.log(flippedCard);
+            //         // console.log(unflippedDeck);
+            //
+            //         flippedDeck.appendChild(flippedCard);
+            //         // console.log(flippedDeck);
+            //         let suit = flippedCard.dataset.suit;
+            //         let rank = flippedCard.dataset.rank;
+            //         const cardHeader = document.createElement('DIV');
+            //         cardHeader.classList.add('card-header');
+            //         cardHeader.textContent = `${suit} ${rank}`;
+            //     })
+            // }
+
+
     },
 
     unflipTheFlippedDeck: function () {
@@ -95,8 +121,8 @@ export const dom = {
             if (unflippedCardsContainer.hasChildNodes() === false) {
                 let flippedDeck = document.getElementById('flipped');
                 let flippedCards = flippedDeck.getElementsByClassName('card flipped');
-                console.log(flippedDeck);
-                console.log(flippedCards);
+                // console.log(flippedDeck);
+                // console.log(flippedCards);
 
                 let zIndex = 0;
                 for(let i = flippedCards.length-1;i >= 0;i--) {
@@ -110,8 +136,8 @@ export const dom = {
                     flippedCard.classList.add('unflipped');
                 }
 
-                console.log(flippedDeck);
-                console.log(unflippedCardsContainer);
+                // console.log(flippedDeck);
+                // console.log(unflippedCardsContainer);
 
             }
         })
