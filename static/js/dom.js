@@ -51,6 +51,7 @@ export const dom = {
         }
     },
 
+
     flipCardFromUnflippedDeck: function() {
         let unflippedDeck = document.getElementById('unflipped');
         let flippedDeck = document.getElementById('flipped');
@@ -80,6 +81,7 @@ export const dom = {
             })
         }
     }
+
 };
 
 
