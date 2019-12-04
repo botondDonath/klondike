@@ -69,59 +69,27 @@ export const dom = {
         }
     },
     drag: {
-        mouse: {
-            x: null,
-            y: null,
-            set coords(mouseEvent) {
-                this.x = mouseEvent.clientX;
-                this.y = mouseEvent.clientY;
-            },
-            getVector: function (mouseEvent) {
-                const oldX = this.x;
-                const oldY = this.y;
-                this.coords = mouseEvent;
-                return {
-                    dx: this.x - oldX,
-                    dy: this.y - oldY
-                }
-            }
-        },
         init: function () {
             const drag = this;
             Array.from(document.getElementsByClassName('card'))
                 .forEach(function (card) {
-                    card.onmousedown = drag.starter.launch.bind(drag);
+                    card.onmousedown = drag.starter.main.bind(drag.starter);
                 });
         },
-        detectTarget: function (clone) {
-            let targetBelow;
-            const corners = util.getCorners(clone);
-            for (const corner of corners) {
-                const elemBelow = document.elementFromPoint(corner.x, corner.y);
-                if (elemBelow && elemBelow.classList.contains('target')) {
-                    targetBelow = elemBelow;
-                    break;
-                }
-            }
-            return targetBelow;
-        },
-        handleCardMovement: function (clone, event) {
-            const vector = this.mouse.getVector(event);
-            const cloneRect = clone.getBoundingClientRect();
-            clone.style.left = (cloneRect.x + vector.dx) + 'px';
-            clone.style.top = (cloneRect.y + vector.dy) + 'px';
-        },
-        handleCardPassage: function (clone) {
-            const targetCardBelow = dom.drag.detectTarget(clone);
-            if (targetCardBelow && !targetCardBelow.classList.contains('active')) {
-                targetCardBelow.classList.add('active');
-                clone.classList.add('over');
-            } else if (!targetCardBelow && clone.classList.contains('over')) {
-                document.querySelector('.active').classList.remove('active');
-                clone.classList.remove('over');
-            }
-        },
         starter: {
+            prepareTargets: function (card) {
+                const dragData = {
+                    color: card.dataset.color,
+                    rank: parseInt(card.dataset.rank)
+                };
+                Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
+                    .filter(card => {
+                        return card.dataset.color !== dragData.color && parseInt(card.dataset.rank) === dragData.rank + 1;
+                    })
+                    .forEach(target => {
+                        target.classList.add('target');
+                    });
+            },
             createClone: function (card) {
                 const clone = card.cloneNode(true);
                 clone.classList.replace('card', 'card-clone');
@@ -131,37 +99,79 @@ export const dom = {
                 clone.style.top = cardRect.y + 'px';
                 return clone;
             },
-            prepareTargets: function (dragData) {
-                Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
-                    .filter(card => {
-                        return card.dataset.color !== dragData.color && parseInt(card.dataset.rank) === dragData.rank + 1;
-                    })
-                    .forEach(target => {
-                        target.classList.add('target');
-                    });
+            prepareClone: function (clone, event) {
+                this.mover.mouse.coords = event;
+                document.onmousemove = this.mover.main.bind(clone);
+                document.onmouseup = this.end.bind(clone);
+                document.body.appendChild(clone);
             },
-            launch: function (event) {
+            prepareCard: function (card) {
+                card.classList.add('dragged');
+                card.style.opacity = '70%';
+            },
+            main: function (event) {
                 event.preventDefault();
                 const card = event.target;
                 if (!card.classList.contains('unflipped')) {
-                    card.classList.add('dragged');
-                    this.starter.prepareTargets({
-                        color: card.dataset.color,
-                        rank: parseInt(card.dataset.rank)
-                    });
-                    const clone = this.starter.createClone(card);
-                    this.mouse.coords = event;
-                    document.onmousemove = this.move.bind(clone);
-                    document.onmouseup = this.end.bind(clone);
-                    document.body.appendChild(clone);
-                    card.style.opacity = '70%';
+                    this.prepareTargets(card);
+                    const clone = this.createClone(card);
+                    this.prepareClone.call(dom.drag, clone, event);
+                    this.prepareCard(card);
                 }
             },
         },
-        move: function (event) {
-            event.preventDefault();
-            dom.drag.handleCardMovement(this, event);
-            dom.drag.handleCardPassage(this);
+        mover: {
+            mouse: {
+                x: null,
+                y: null,
+                set coords(mouseEvent) {
+                    this.x = mouseEvent.clientX;
+                    this.y = mouseEvent.clientY;
+                },
+                getVector: function (mouseEvent) {
+                    const oldX = this.x;
+                    const oldY = this.y;
+                    this.coords = mouseEvent;
+                    return {
+                        dx: this.x - oldX,
+                        dy: this.y - oldY
+                    }
+                }
+            },
+            detectTarget: function (clone) {
+                let targetBelow;
+                const corners = util.getCorners(clone);
+                for (const corner of corners) {
+                    const elemBelow = document.elementFromPoint(corner.x, corner.y);
+                    if (elemBelow && elemBelow.classList.contains('target')) {
+                        targetBelow = elemBelow;
+                        break;
+                    }
+                }
+                return targetBelow;
+            },
+            glide: function (clone, event) {
+                const vector = this.mouse.getVector(event);
+                const cloneRect = clone.getBoundingClientRect();
+                clone.style.left = (cloneRect.x + vector.dx) + 'px';
+                clone.style.top = (cloneRect.y + vector.dy) + 'px';
+            },
+            handleContact: function (clone) {
+                const targetCardBelow = this.detectTarget(clone);
+                if (targetCardBelow && !targetCardBelow.classList.contains('active')) {
+                    targetCardBelow.classList.add('active');
+                    clone.classList.add('over');
+                } else if (!targetCardBelow && clone.classList.contains('over')) {
+                    document.querySelector('.active').classList.remove('active');
+                    clone.classList.remove('over');
+                }
+            },
+            main: function (event) {
+                event.preventDefault();
+                dom.drag.mover.glide(this, event);
+                dom.drag.mover.handleContact(this);
+            },
+
         },
         end: function () {
             document.onmousemove = null;
