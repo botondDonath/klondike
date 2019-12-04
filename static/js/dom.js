@@ -123,30 +123,44 @@ export const dom = {
             createClone: function (card) {
                 const clone = card.cloneNode(true);
                 clone.classList.replace('card', 'card-clone');
-                clone.style.position = 'fixed';
-                const cardRect = card.getBoundingClientRect();
-                clone.style.left = cardRect.x + 'px';
-                clone.style.top = cardRect.y + 'px';
                 return clone;
             },
-            prepareDocument: function (clone, event) {
-                this.mover.mouse.coords = event;
-                document.onmousemove = this.mover.main.bind(clone);
-                document.onmouseup = this.ender.main.bind(this.ender);
-                document.body.appendChild(clone);
+            createCloneContainer: function (grabbedCard) {
+                const cloneContainer = document.createElement('DIV');
+                cloneContainer.id = 'clone-container';
+                const cardRect = grabbedCard.getBoundingClientRect();
+                cloneContainer.style.left = cardRect.x + 'px';
+                cloneContainer.style.top = cardRect.y + 'px';
+                let currentCard = grabbedCard;
+                while (currentCard) {
+                    const clone = this.createClone(currentCard);
+                    cloneContainer.appendChild(clone);
+                    currentCard = currentCard.nextElementSibling
+                }
+                return cloneContainer;
             },
-            prepareCard: function (card) {
-                card.classList.add('dragged');
-                card.style.opacity = '0';
+            prepareDocument: function (cloneContainer, event) {
+                this.mover.mouse.coords = event;
+                document.onmousemove = this.mover.main.bind(cloneContainer);
+                document.onmouseup = this.ender.main.bind(this.ender);
+                document.body.appendChild(cloneContainer);
+            },
+            prepareCards: function (card) {
+                let currentCard = card;
+                while (currentCard) {
+                    currentCard.classList.add('dragged');
+                    currentCard.style.opacity = '0';
+                    currentCard = currentCard.nextElementSibling;
+                }
             },
             main: function (event) {
                 event.preventDefault();
-                const card = event.target;
-                if (!card.classList.contains('unflipped')) {
-                    this.prepareTargets(card);
-                    const clone = this.createClone(card);
-                    this.prepareDocument.call(dom.drag, clone, event);
-                    this.prepareCard(card);
+                const grabbedCard = event.target;
+                if (!grabbedCard.classList.contains('unflipped')) {
+                    const cloneContainer = this.createCloneContainer(grabbedCard);
+                    this.prepareTargets(grabbedCard);
+                    this.prepareDocument.call(dom.drag, cloneContainer, event);
+                    this.prepareCards(grabbedCard);
                 }
             },
         },
@@ -168,9 +182,9 @@ export const dom = {
                     }
                 }
             },
-            detectTarget: function (clone) {
+            detectTarget: function (cloneContainer) {
                 let targetBelow;
-                const corners = util.getCorners(clone);
+                const corners = util.getCorners(cloneContainer);
                 for (const corner of corners) {
                     const elemBelow = document.elementFromPoint(corner.x, corner.y);
                     if (elemBelow && elemBelow.classList.contains('target')) {
@@ -180,20 +194,20 @@ export const dom = {
                 }
                 return targetBelow;
             },
-            glide: function (clone, event) {
+            glide: function (cloneContainer, event) {
                 const vector = this.mouse.getVector(event);
-                const cloneRect = clone.getBoundingClientRect();
-                clone.style.left = (cloneRect.x + vector.dx) + 'px';
-                clone.style.top = (cloneRect.y + vector.dy) + 'px';
+                const cloneContainerRect = cloneContainer.getBoundingClientRect();
+                cloneContainer.style.left = (cloneContainerRect.x + vector.dx) + 'px';
+                cloneContainer.style.top = (cloneContainerRect.y + vector.dy) + 'px';
             },
-            handleContact: function (clone) {
-                const targetCardBelow = this.detectTarget(clone);
+            handleContact: function (cloneContainer) {
+                const targetCardBelow = this.detectTarget(cloneContainer);
                 if (targetCardBelow && !targetCardBelow.classList.contains('active')) {
                     targetCardBelow.classList.add('active');
-                    clone.classList.add('over');
-                } else if (!targetCardBelow && clone.classList.contains('over')) {
+                    cloneContainer.classList.add('over');
+                } else if (!targetCardBelow && cloneContainer.classList.contains('over')) {
                     document.querySelector('.active').classList.remove('active');
-                    clone.classList.remove('over');
+                    cloneContainer.classList.remove('over');
                 }
             },
             main: function (event) {
@@ -207,12 +221,6 @@ export const dom = {
             disableMouseEvents: function () {
                 document.onmousemove = null;
                 document.onmouseup = null;
-            },
-            destroyClones: function () {
-                Array.from(document.getElementsByClassName('card-clone'))
-                    .forEach(clone => {
-                        clone.remove();
-                    })
             },
             resetDraggedCards: function () {
                 Array.from(document.getElementsByClassName('dragged'))
@@ -235,7 +243,7 @@ export const dom = {
             },
             main: function () {
                 this.disableMouseEvents();
-                this.destroyClones();
+                document.getElementById('clone-container').remove();
                 const activeTargetCard = document.querySelector('.active');
                 if (activeTargetCard) {
                     this.dropCards(activeTargetCard);

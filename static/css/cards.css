@@ -12,7 +12,15 @@
 }
 
 .card-clone {
+    pointer-events: none;
+}
+
+#clone-container {
     z-index: 999;
+    position: fixed;
+    border: none;
+    padding-bottom: 130px;
+    border-radius: 10px;
 }
 
 .empty-slot {
@@ -27,7 +35,7 @@
     left: 0;
 }
 
-.column .card {
+.column .card, .card-clone {
     margin-bottom: -130px;
 }
 
