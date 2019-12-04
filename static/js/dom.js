@@ -84,25 +84,27 @@ export const dom = {
             clone.style.top = cardRect.y + 'px';
             return clone;
         },
+        prepareTargets: function (dragData) {
+            Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
+                .filter(card => {
+                    return card.dataset.color !== dragData.color && parseInt(card.dataset.rank) === dragData.rank + 1;
+                })
+                .forEach(target => {
+                    target.classList.add('target');
+                    target.addEventListener('cardEnter', dom.drag.cardEnter);
+                    target.addEventListener('cardLeave', dom.drag.cardLeave);
+                });
+        },
         start: function (event) {
             event.preventDefault();
             const card = this;
             if (!card.classList.contains('unflipped')) {
                 card.classList.add('dragged');
-                const data = {
+                dom.drag.prepareTargets({
                     color: card.dataset.color,
-                    rank: parseInt(card.dataset.rank),
-                };
-                const clone = dom.drag.createClone(card);
-                Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
-                    .filter(card => {
-                        return card.dataset.color !== data.color && parseInt(card.dataset.rank) === data.rank + 1;
-                    })
-                    .forEach(target => {
-                    target.classList.add('target');
-                    target.addEventListener('cardEnter', dom.drag.cardEnter.bind(target));
-                    target.addEventListener('cardLeave', dom.drag.cardLeave.bind(target));
+                    rank: parseInt(card.dataset.rank)
                 });
+                const clone = dom.drag.createClone(card);
                 dom.drag.mouseData = event;
                 document.onmousemove = dom.drag.move;
                 document.onmouseup = dom.drag.end;
