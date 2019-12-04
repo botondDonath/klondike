@@ -87,11 +87,13 @@ export const dom = {
             event.preventDefault();
             const card = this;
             if (!card.classList.contains('unflipped')) {
+                card.classList.add('dragged');
                 const clone = dom.drag.createClone(card);
                 dom.drag.mouseData = event;
                 document.onmousemove = dom.drag.move;
                 document.onmouseup = dom.drag.end;
                 document.body.appendChild(clone);
+                card.style.opacity = '70%';
             }
         },
         move: function (event) {
@@ -110,6 +112,11 @@ export const dom = {
             const clones = document.getElementsByClassName('card-clone');
             for (const clone of clones) {
                 clone.remove();
+            }
+            const draggedCards = document.getElementsByClassName('dragged');
+            for (const card of draggedCards) {
+                card.style.opacity = '100%';
+                card.classList.remove('dragged');
             }
         },
         set mouseData(mouseEvent) {
