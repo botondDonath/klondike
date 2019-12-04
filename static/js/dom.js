@@ -72,7 +72,7 @@ export const dom = {
         init: function () {
             Array.from(document.getElementsByClassName('card'))
                 .forEach(function (card) {
-                    card.onmousedown = dom.drag.start;
+                    card.onmousedown = dom.drag.start.bind(dom.drag);
                 });
         },
         createClone: function (card) {
@@ -95,7 +95,7 @@ export const dom = {
         },
         start: function (event) {
             event.preventDefault();
-            const card = this;
+            const card = event.target;
             if (!card.classList.contains('unflipped')) {
                 card.classList.add('dragged');
                 dom.drag.prepareTargets({
@@ -103,7 +103,7 @@ export const dom = {
                     rank: parseInt(card.dataset.rank)
                 });
                 const clone = dom.drag.createClone(card);
-                dom.drag.mouseData = event;
+                this.mouse.coords = event;
                 document.onmousemove = dom.drag.move.bind(clone);
                 document.onmouseup = dom.drag.end.bind(clone);
                 document.body.appendChild(clone);
@@ -122,13 +122,11 @@ export const dom = {
             }
             return targetBelow;
         },
-        handleCardMovement: function (clone) {
-            const mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
-            dom.drag.mouseData = event;
-            const dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
+        handleCardMovement: function (clone, event) {
+            const vector = this.mouse.getVector(event);
             const cloneRect = clone.getBoundingClientRect();
-            clone.style.left = (cloneRect.x + dx) + 'px';
-            clone.style.top = (cloneRect.y + dy) + 'px';
+            clone.style.left = (cloneRect.x + vector.dx) + 'px';
+            clone.style.top = (cloneRect.y + vector.dy) + 'px';
         },
         handleCardPassage: function (clone) {
             const targetCardBelow = dom.drag.detectTarget(clone);
@@ -142,7 +140,7 @@ export const dom = {
         },
         move: function (event) {
             event.preventDefault();
-            dom.drag.handleCardMovement(this);
+            dom.drag.handleCardMovement(this, event);
             dom.drag.handleCardPassage(this);
         },
         end: function () {
@@ -162,13 +160,22 @@ export const dom = {
                     target.classList.remove('target', 'active');
                 })
         },
-        set mouseData(mouseEvent) {
-            this.mouse.x = mouseEvent.clientX;
-            this.mouse.y = mouseEvent.clientY;
-        },
         mouse: {
             x: null,
-            y: null
-        }
+            y: null,
+            set coords(mouseEvent) {
+                this.x = mouseEvent.clientX;
+                this.y = mouseEvent.clientY;
+            },
+            getVector: function (mouseEvent) {
+                const oldX = this.x;
+                const oldY = this.y;
+                this.coords = mouseEvent;
+                return {
+                    dx: this.x - oldX,
+                    dy: this.y - oldY
+                }
+            }
+        },
     }
 };
