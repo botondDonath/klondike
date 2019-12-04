@@ -9,8 +9,6 @@ body {
 }
 
 #board {
-    border: black solid 3px;
-    border-radius: 20px;
     width: 1500px;
     height: 750px;
     margin: 20px auto;

@@ -43,5 +43,5 @@
 }
 
 .active {
-    border-color: #cc0001;
+    border-color: var(--card-red);
 }
