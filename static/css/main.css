@@ -125,6 +125,13 @@ body {
     font-weight: bold;
 }
 
+.suit-label, .rank-label {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
 .spades {
     background-image: url("../images/spades.png");
 }
