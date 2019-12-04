@@ -76,8 +76,7 @@ export const dom = {
                     unflippedCardsContainer.appendChild(unflippedCard);
                     unflippedCard.style.zIndex = (zIndex--).toString();
                     unflippedCard.textContent = '';
-                    unflippedCard.classList.remove('flipped');
-                    unflippedCard.classList.add('unflipped');
+                    unflippedCard.classList.replace('flipped', 'unflipped');
                 }
             }
         })
