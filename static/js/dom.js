@@ -4,6 +4,7 @@ export const dom = {
     init: function () {
         this.deck.init();
         this.drag.init();
+        this.flipper.init();
         this.flipCardFromUnflippedDeck();
         this.unflipTheFlippedDeck();
     },
@@ -97,6 +98,24 @@ export const dom = {
                 }
             }
         })
+    },
+    flipper: {
+        init: function () {
+            const flipCard = this.flipCard;
+            document.querySelectorAll('.card')
+                .forEach(function (card) {
+                    card.addEventListener('click', flipCard.bind(card));
+                })
+        },
+        flipCard: function () {
+            if (
+                this.classList.contains('unflipped') &&
+                !this.nextElementSibling &&
+                this.parentNode !== document.getElementById('unflipped')
+            ) {
+                this.classList.remove('unflipped');
+            }
+        }
     },
     drag: {
         init: function () {
