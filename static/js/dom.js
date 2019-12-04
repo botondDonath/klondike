@@ -113,7 +113,6 @@ export const dom = {
             }
         },
         cardEnter: function () {
-            this.style.opacity = '75%';
             this.classList.add('active');
         },
         cardLeave: function () {
