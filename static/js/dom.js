@@ -104,8 +104,8 @@ export const dom = {
                 });
                 const clone = dom.drag.createClone(card);
                 dom.drag.mouseData = event;
-                document.onmousemove = dom.drag.move;
-                document.onmouseup = dom.drag.end;
+                document.onmousemove = dom.drag.move.bind(clone);
+                document.onmouseup = dom.drag.end.bind(clone);
                 document.body.appendChild(clone);
                 card.style.opacity = '70%';
             }
@@ -122,6 +122,14 @@ export const dom = {
             }
             return targetBelow;
         },
+        handleCardMovement: function (clone) {
+            const mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
+            dom.drag.mouseData = event;
+            const dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
+            const cloneRect = clone.getBoundingClientRect();
+            clone.style.left = (cloneRect.x + dx) + 'px';
+            clone.style.top = (cloneRect.y + dy) + 'px';
+        },
         handleCardPassage: function (clone) {
             const targetCardBelow = dom.drag.detectTarget(clone);
             if (targetCardBelow && !targetCardBelow.classList.contains('active')) {
@@ -134,15 +142,8 @@ export const dom = {
         },
         move: function (event) {
             event.preventDefault();
-            const clone = document.getElementsByClassName('card-clone')[0];
-
-            const mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
-            dom.drag.mouseData = event;
-            const dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
-            const cloneRect = clone.getBoundingClientRect();
-            clone.style.left = (cloneRect.x + dx) + 'px';
-            clone.style.top = (cloneRect.y + dy) + 'px';
-            dom.drag.handleCardPassage(clone);
+            dom.drag.handleCardMovement(this);
+            dom.drag.handleCardPassage(this);
         },
         end: function () {
             document.onmousemove = null;
