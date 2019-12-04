@@ -78,9 +78,9 @@ export const dom = {
             const clone = card.cloneNode(true);
             clone.classList.replace('card', 'card-clone');
             clone.style.position = 'fixed';
-            const position = card.getBoundingClientRect();
-            clone.style.left = position.x + 'px';
-            clone.style.top = position.y + 'px';
+            const cardRect = card.getBoundingClientRect();
+            clone.style.left = cardRect.x + 'px';
+            clone.style.top = cardRect.y + 'px';
             return clone;
         },
         start: function (event) {
@@ -89,6 +89,11 @@ export const dom = {
             if (!card.classList.contains('unflipped')) {
                 card.classList.add('dragged');
                 const clone = dom.drag.createClone(card);
+                document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)').forEach(target => {
+                    target.classList.add('target');
+                    target.addEventListener('cardEnter', dom.drag.cardEnter.bind(target));
+                    target.addEventListener('cardLeave', dom.drag.cardLeave.bind(target));
+                });
                 dom.drag.mouseData = event;
                 document.onmousemove = dom.drag.move;
                 document.onmouseup = dom.drag.end;
@@ -96,15 +101,48 @@ export const dom = {
                 card.style.opacity = '70%';
             }
         },
+        cardEnter: function () {
+            this.style.opacity = '75%';
+            this.classList.add('active');
+        },
+        cardLeave: function () {
+            this.style.opacity = '100%';
+            this.classList.remove('active');
+        },
+        detectTarget: function (clone) {
+            const corners = util.getCorners(clone);
+            for (const corner of corners) {
+                let elemBelow = document.elementFromPoint(corner.x, corner.y);
+                if (elemBelow && elemBelow.classList.contains('target') && !clone.classList.contains('over')) {
+                    clone.classList.add('over');
+                    const cardEnterEvent = new Event('cardEnter');
+                    elemBelow.dispatchEvent(cardEnterEvent);
+                    return true;
+                } else if (elemBelow && elemBelow.classList.contains('active')) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        deactivateTarget: function (clone) {
+            clone.classList.remove('over');
+            const activeTarget = document.querySelector('.active');
+            const cardLeaveEvent = new Event('cardLeave');
+            activeTarget.dispatchEvent(cardLeaveEvent);
+        },
         move: function (event) {
             event.preventDefault();
             const clone = document.getElementsByClassName('card-clone')[0];
             let mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
             dom.drag.mouseData = event;
             let dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
-            const clonePosition = clone.getBoundingClientRect();
-            clone.style.left = (clonePosition.x + dx) + 'px';
-            clone.style.top = (clonePosition.y + dy) + 'px';
+            let cloneRect = clone.getBoundingClientRect();
+            clone.style.left = (cloneRect.x + dx) + 'px';
+            clone.style.top = (cloneRect.y + dy) + 'px';
+            const noTargetBelow = !dom.drag.detectTarget(clone);
+            if (noTargetBelow && clone.classList.contains('over')) {
+                dom.drag.deactivateTarget(clone);
+            }
         },
         end: function () {
             document.onmousemove = null;
@@ -118,6 +156,10 @@ export const dom = {
                 card.style.opacity = '100%';
                 card.classList.remove('dragged');
             }
+            document.querySelectorAll('.target').forEach(target => {
+                target.classList.remove('target', 'active');
+                target.style.opacity = '100%';
+            })
         },
         set mouseData(mouseEvent) {
             this.mouse.x = mouseEvent.clientX;
@@ -125,7 +167,8 @@ export const dom = {
         },
         mouse: {
             x: null,
-            y: null
+            y:
+                null
         }
     }
 };

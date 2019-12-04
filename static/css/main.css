@@ -83,6 +83,10 @@ body {
     border-radius: 10px;
 }
 
+.card-clone {
+    z-index: 999;
+}
+
 .empty-slot {
     background: var(--primary-opaque);
     position: absolute;
@@ -114,6 +118,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 0 5px;
+    pointer-events: none;
 }
 
 .unflipped .card-header {
