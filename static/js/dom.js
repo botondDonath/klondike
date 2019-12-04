@@ -4,6 +4,8 @@ export const dom = {
     init: function () {
         this.deck.init();
         this.drag.init();
+        this.flipCardFromUnflippedDeck();
+        this.unflipTheFlippedDeck();
     },
     deck: {
         init: function () {
@@ -67,6 +69,34 @@ export const dom = {
                 unflippedPile.appendChild(card);
             }
         }
+    },
+    flipCardFromUnflippedDeck: function() {
+        let unflippedDeck = document.getElementById('unflipped');
+        let flippedDeck = document.getElementById('flipped');
+        let zIndexFlippedCards = 0;
+        unflippedDeck.addEventListener('click', function () {
+            if (unflippedDeck.querySelector('.card')) {
+                let flippedCard = unflippedDeck.lastChild;
+                flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
+                util.flipCard(flippedDeck, flippedCard);
+            }
+        });
+    },
+    unflipTheFlippedDeck: function () {
+        let unflippedDeck = document.getElementById('unflipped');
+        unflippedDeck.addEventListener('dblclick', function () {
+            if (!unflippedDeck.querySelector('.card')) {
+                let flippedDeck = document.getElementById('flipped');
+                let flippedCards = flippedDeck.getElementsByClassName('card flipped');
+                let zIndex = 0;
+                for (let i = flippedCards.length - 1; i >= 0; i--) {
+                    let unflippedCard = flippedCards[i];
+                    unflippedDeck.appendChild(unflippedCard);
+                    unflippedCard.style.zIndex = (zIndex--).toString();
+                    unflippedCard.classList.replace('flipped', 'unflipped');
+                }
+            }
+        })
     },
     drag: {
         init: function () {

@@ -21,7 +21,7 @@
     z-index: -1;
 }
 
-#unflipped .card {
+#unflipped .card, #flipped .card {
     position: absolute;
     top: 0;
     left: 0;

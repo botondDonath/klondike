@@ -1,14 +1,14 @@
 #board-header {
     display: flex;
     justify-content: space-between;
-    height: 150px;
+    height: 170px;
 }
 
 #unflipped, #flipped, #invisible {
     width: 120px;
 }
 
-#unflipped {
+#unflipped, #flipped {
     position: relative;
     top: 0;
     left: 0;
