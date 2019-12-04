@@ -87,27 +87,10 @@ export const dom = {
             }
         },
         init: function () {
+            const drag = this;
             Array.from(document.getElementsByClassName('card'))
                 .forEach(function (card) {
-                    card.onmousedown = dom.drag.start.bind(dom.drag);
-                });
-        },
-        createClone: function (card) {
-            const clone = card.cloneNode(true);
-            clone.classList.replace('card', 'card-clone');
-            clone.style.position = 'fixed';
-            const cardRect = card.getBoundingClientRect();
-            clone.style.left = cardRect.x + 'px';
-            clone.style.top = cardRect.y + 'px';
-            return clone;
-        },
-        prepareTargets: function (dragData) {
-            Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
-                .filter(card => {
-                    return card.dataset.color !== dragData.color && parseInt(card.dataset.rank) === dragData.rank + 1;
-                })
-                .forEach(target => {
-                    target.classList.add('target');
+                    card.onmousedown = drag.starter.launch.bind(drag);
                 });
         },
         detectTarget: function (clone) {
@@ -138,22 +121,42 @@ export const dom = {
                 clone.classList.remove('over');
             }
         },
-        start: function (event) {
-            event.preventDefault();
-            const card = event.target;
-            if (!card.classList.contains('unflipped')) {
-                card.classList.add('dragged');
-                dom.drag.prepareTargets({
-                    color: card.dataset.color,
-                    rank: parseInt(card.dataset.rank)
-                });
-                const clone = dom.drag.createClone(card);
-                this.mouse.coords = event;
-                document.onmousemove = dom.drag.move.bind(clone);
-                document.onmouseup = dom.drag.end.bind(clone);
-                document.body.appendChild(clone);
-                card.style.opacity = '70%';
-            }
+        starter: {
+            createClone: function (card) {
+                const clone = card.cloneNode(true);
+                clone.classList.replace('card', 'card-clone');
+                clone.style.position = 'fixed';
+                const cardRect = card.getBoundingClientRect();
+                clone.style.left = cardRect.x + 'px';
+                clone.style.top = cardRect.y + 'px';
+                return clone;
+            },
+            prepareTargets: function (dragData) {
+                Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
+                    .filter(card => {
+                        return card.dataset.color !== dragData.color && parseInt(card.dataset.rank) === dragData.rank + 1;
+                    })
+                    .forEach(target => {
+                        target.classList.add('target');
+                    });
+            },
+            launch: function (event) {
+                event.preventDefault();
+                const card = event.target;
+                if (!card.classList.contains('unflipped')) {
+                    card.classList.add('dragged');
+                    this.starter.prepareTargets({
+                        color: card.dataset.color,
+                        rank: parseInt(card.dataset.rank)
+                    });
+                    const clone = this.starter.createClone(card);
+                    this.mouse.coords = event;
+                    document.onmousemove = this.move.bind(clone);
+                    document.onmouseup = this.end.bind(clone);
+                    document.body.appendChild(clone);
+                    card.style.opacity = '70%';
+                }
+            },
         },
         move: function (event) {
             event.preventDefault();
