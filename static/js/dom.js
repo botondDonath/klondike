@@ -3,14 +3,6 @@ import {util} from "./util.js";
 export const dom = {
     init: function () {
         this.deck.init();
-        dragula(Array.from(document.querySelectorAll('.column')), {
-            moves: function (el) {
-                return !el.classList.contains('unflipped');
-            }
-        })
-            .on('drop', function () {
-                console.log('dropped');
-            })
     },
     deck: {
         init: function () {
