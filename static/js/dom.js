@@ -99,10 +99,10 @@ export const dom = {
                 clone.style.top = cardRect.y + 'px';
                 return clone;
             },
-            prepareClone: function (clone, event) {
+            prepareDocument: function (clone, event) {
                 this.mover.mouse.coords = event;
                 document.onmousemove = this.mover.main.bind(clone);
-                document.onmouseup = this.end.bind(clone);
+                document.onmouseup = this.ender.main.bind(this.ender);
                 document.body.appendChild(clone);
             },
             prepareCard: function (card) {
@@ -115,7 +115,7 @@ export const dom = {
                 if (!card.classList.contains('unflipped')) {
                     this.prepareTargets(card);
                     const clone = this.createClone(card);
-                    this.prepareClone.call(dom.drag, clone, event);
+                    this.prepareDocument.call(dom.drag, clone, event);
                     this.prepareCard(card);
                 }
             },
@@ -173,22 +173,36 @@ export const dom = {
             },
 
         },
-        end: function () {
-            document.onmousemove = null;
-            document.onmouseup = null;
-            const clones = document.getElementsByClassName('card-clone');
-            for (const clone of clones) {
-                clone.remove();
-            }
-            const draggedCards = document.getElementsByClassName('dragged');
-            for (const card of draggedCards) {
-                card.style.opacity = '100%';
-                card.classList.remove('dragged');
-            }
-            Array.from(document.querySelectorAll('.target'))
-                .forEach(target => {
-                    target.classList.remove('target', 'active');
-                })
-        },
+        ender: {
+            disableMouseEvents: function () {
+                document.onmousemove = null;
+                document.onmouseup = null;
+            },
+            destroyClones: function () {
+                Array.from(document.getElementsByClassName('card-clone'))
+                    .forEach(clone => {
+                        clone.remove();
+                    })
+            },
+            resetDraggedCards: function () {
+                Array.from(document.getElementsByClassName('dragged'))
+                    .forEach(card => {
+                        card.style.opacity = '100%';
+                        card.classList.remove('dragged');
+                    })
+            },
+            resetTargetCards: function () {
+                Array.from(document.querySelectorAll('.target'))
+                    .forEach(target => {
+                        target.classList.remove('target', 'active');
+                    })
+            },
+            main: function () {
+                this.disableMouseEvents();
+                this.destroyClones();
+                this.resetDraggedCards();
+                this.resetTargetCards();
+            },
+        }
     }
 };
