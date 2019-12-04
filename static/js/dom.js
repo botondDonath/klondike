@@ -70,7 +70,7 @@ export const dom = {
             }
         }
     },
-    flipCardFromUnflippedDeck: function() {
+    flipCardFromUnflippedDeck: function () {
         let unflippedDeck = document.getElementById('unflipped');
         let flippedDeck = document.getElementById('flipped');
         let zIndexFlippedCards = 0;
@@ -227,9 +227,19 @@ export const dom = {
                         target.classList.remove('target', 'active');
                     })
             },
+            dropCards: function (target) {
+                document.querySelectorAll('.dragged')
+                    .forEach(card => {
+                        target.parentNode.appendChild(card);
+                    });
+            },
             main: function () {
                 this.disableMouseEvents();
                 this.destroyClones();
+                const activeTargetCard = document.querySelector('.active');
+                if (activeTargetCard) {
+                    this.dropCards(activeTargetCard);
+                }
                 this.resetDraggedCards();
                 this.resetTargetCards();
             },
