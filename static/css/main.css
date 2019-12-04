@@ -72,13 +72,13 @@ body {
     border: black solid 1px;
 }
 
-#unflipped {
+#unflipped, #flipped {
     position: relative;
     top: 0;
     left: 0;
 }
 
-#unflipped .card {
+#unflipped .card, #flipped .card {
     position: absolute;
     top: 0;
     left: 0;

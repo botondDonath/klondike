@@ -49,5 +49,35 @@ export const dom = {
                 unflippedPile.appendChild(card);
             }
         }
+    },
+
+    flipCardFromUnflippedDeck: function() {
+        let unflippedDeck = document.getElementById('unflipped');
+        let flippedDeck = document.getElementById('flipped');
+        let unflippedCards = unflippedDeck.getElementsByClassName('unflipped card');
+        console.log(unflippedDeck);
+
+        let zIndexFlippedCards = 0;
+        for (let unflippedCard of unflippedCards) {
+            unflippedCard.addEventListener('click', function (event) {
+                console.log(unflippedDeck);
+
+                let flippedCard = event.currentTarget;
+                flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
+                //remove flipped card from unflipped deck
+                flippedCard.remove();
+                console.log(flippedCard);
+                console.log(unflippedDeck);
+
+                flippedDeck.appendChild(flippedCard);
+                console.log(flippedDeck);
+
+            })
+        }
     }
 };
+
+
+
+
+
