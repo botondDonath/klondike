@@ -70,10 +70,10 @@ export const dom = {
     },
     drag: {
         init: function () {
-            const cards = Array.from(document.getElementsByClassName('card'));
-            cards.forEach(function (card) {
-                card.onmousedown = dom.drag.start;
-            })
+            Array.from(document.getElementsByClassName('card'))
+                .forEach(function (card) {
+                    card.onmousedown = dom.drag.start;
+                });
         },
         createClone: function (card) {
             const clone = card.cloneNode(true);
@@ -169,10 +169,13 @@ export const dom = {
                 card.style.opacity = '100%';
                 card.classList.remove('dragged');
             }
-            document.querySelectorAll('.target').forEach(target => {
-                target.classList.remove('target', 'active');
-                target.style.opacity = '100%';
-            })
+            Array.from(document.querySelectorAll('.target'))
+                .forEach(target => {
+                    target.classList.remove('target', 'active');
+                    target.style.opacity = '100%';
+                    target.removeEventListener('cardEnter', dom.drag.cardEnter);
+                    target.removeEventListener('cardLeave', dom.drag.cardLeave);
+                })
         },
         set mouseData(mouseEvent) {
             this.mouse.x = mouseEvent.clientX;
