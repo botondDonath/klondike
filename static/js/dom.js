@@ -26,7 +26,7 @@ export const dom = {
             card.classList.add('card', 'unflipped');
             card.dataset.suit = suit;
             card.dataset.rank = rank.toString();
-            util.createCardHeader(card, suit, rank);
+            util.createCardHeader(card);
             return card;
         },
         display: function (deck) {
@@ -50,26 +50,17 @@ export const dom = {
     flipCardFromUnflippedDeck: function() {
         let unflippedDeck = document.getElementById('unflipped');
         let flippedDeck = document.getElementById('flipped');
-
         let zIndexFlippedCards = 0;
-            unflippedDeck.addEventListener('click', function (event) {
-                if (unflippedDeck.hasChildNodes()) {
-                    let flippedCard = unflippedDeck.lastChild;
-                    console.log(flippedCard);
-                    flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
-                    //remove flipped card from unflipped deck
-                    flippedCard.remove();
-                    flippedCard.classList.remove('unflipped');
-                    flippedCard.classList.add('flipped');
-
-                    flippedDeck.appendChild(flippedCard);
-                    let suit = flippedCard.dataset.suit;
-                    let rank = flippedCard.dataset.rank;
-                    if (flippedCard.hasChildNodes() === false) {
-                        util.createCardHeader(flippedCard, suit, rank);
-                    }
+        unflippedDeck.addEventListener('click', function (event) {
+            if (unflippedDeck.hasChildNodes()) {
+                let flippedCard = unflippedDeck.lastChild;
+                flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
+                util.flipCard(flippedDeck, flippedCard);
+                if (flippedCard.hasChildNodes() === false) {
+                    util.createCardHeader(flippedCard);
                 }
-            });
+            }
+        });
     },
     unflipTheFlippedDeck: function () {
         let unflippedCardsContainer = document.getElementById('unflipped');
