@@ -30,6 +30,7 @@ export const dom = {
             card = cardContainer.querySelector('.card');
             card.classList.add('card', 'unflipped');
             card.dataset.suit = suit;
+            card.dataset.color = ['spades', 'clubs'].includes(suit) ? 'black' : 'red';
             card.dataset.rank = rank.toString();
             card.querySelector('.suit-label').classList.add(suit);
             switch (rank) {
@@ -88,8 +89,16 @@ export const dom = {
             const card = this;
             if (!card.classList.contains('unflipped')) {
                 card.classList.add('dragged');
+                const data = {
+                    color: card.dataset.color,
+                    rank: parseInt(card.dataset.rank),
+                };
                 const clone = dom.drag.createClone(card);
-                document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)').forEach(target => {
+                Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
+                    .filter(card => {
+                        return card.dataset.color !== data.color && parseInt(card.dataset.rank) === data.rank + 1;
+                    })
+                    .forEach(target => {
                     target.classList.add('target');
                     target.addEventListener('cardEnter', dom.drag.cardEnter.bind(target));
                     target.addEventListener('cardLeave', dom.drag.cardLeave.bind(target));
@@ -133,12 +142,14 @@ export const dom = {
         move: function (event) {
             event.preventDefault();
             const clone = document.getElementsByClassName('card-clone')[0];
-            let mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
+
+            const mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
             dom.drag.mouseData = event;
-            let dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
-            let cloneRect = clone.getBoundingClientRect();
+            const dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
+            const cloneRect = clone.getBoundingClientRect();
             clone.style.left = (cloneRect.x + dx) + 'px';
             clone.style.top = (cloneRect.y + dy) + 'px';
+
             const noTargetBelow = !dom.drag.detectTarget(clone);
             if (noTargetBelow && clone.classList.contains('over')) {
                 dom.drag.deactivateTarget(clone);
@@ -167,8 +178,7 @@ export const dom = {
         },
         mouse: {
             x: null,
-            y:
-                null
+            y: null
         }
     }
 };
