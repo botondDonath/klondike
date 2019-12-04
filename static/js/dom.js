@@ -137,7 +137,7 @@ export const dom = {
             },
             prepareCard: function (card) {
                 card.classList.add('dragged');
-                card.style.opacity = '70%';
+                card.style.opacity = '0';
             },
             main: function (event) {
                 event.preventDefault();
