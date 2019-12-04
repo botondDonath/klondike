@@ -91,8 +91,6 @@ export const dom = {
                 })
                 .forEach(target => {
                     target.classList.add('target');
-                    target.addEventListener('cardEnter', dom.drag.cardEnter);
-                    target.addEventListener('cardLeave', dom.drag.cardLeave);
                 });
         },
         start: function (event) {
@@ -112,21 +110,13 @@ export const dom = {
                 card.style.opacity = '70%';
             }
         },
-        cardEnter: function () {
-            this.classList.add('active');
-        },
-        cardLeave: function () {
-            this.style.opacity = '100%';
-            this.classList.remove('active');
-        },
         detectTarget: function (clone) {
             const corners = util.getCorners(clone);
             for (const corner of corners) {
                 let elemBelow = document.elementFromPoint(corner.x, corner.y);
                 if (elemBelow && elemBelow.classList.contains('target') && !clone.classList.contains('over')) {
                     clone.classList.add('over');
-                    const cardEnterEvent = new Event('cardEnter');
-                    elemBelow.dispatchEvent(cardEnterEvent);
+                    elemBelow.classList.add('active');
                     return true;
                 } else if (elemBelow && elemBelow.classList.contains('active')) {
                     return true;
@@ -136,9 +126,7 @@ export const dom = {
         },
         deactivateTarget: function (clone) {
             clone.classList.remove('over');
-            const activeTarget = document.querySelector('.active');
-            const cardLeaveEvent = new Event('cardLeave');
-            activeTarget.dispatchEvent(cardLeaveEvent);
+            document.querySelector('.active').classList.remove('active');
         },
         move: function (event) {
             event.preventDefault();
@@ -171,9 +159,6 @@ export const dom = {
             Array.from(document.querySelectorAll('.target'))
                 .forEach(target => {
                     target.classList.remove('target', 'active');
-                    target.style.opacity = '100%';
-                    target.removeEventListener('cardEnter', dom.drag.cardEnter);
-                    target.removeEventListener('cardLeave', dom.drag.cardLeave);
                 })
         },
         set mouseData(mouseEvent) {
