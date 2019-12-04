@@ -3,6 +3,7 @@ import {util} from "./util.js";
 export const dom = {
     init: function () {
         this.deck.init();
+        this.drag.init();
     },
     deck: {
         init: function () {
@@ -64,6 +65,60 @@ export const dom = {
                 card.style.zIndex = (zIndex++).toString();
                 unflippedPile.appendChild(card);
             }
+        }
+    },
+    drag: {
+        init: function () {
+            const cards = Array.from(document.getElementsByClassName('card'));
+            cards.forEach(function (card) {
+                card.onmousedown = dom.drag.start;
+            })
+        },
+        createClone: function (card) {
+            const clone = card.cloneNode(true);
+            clone.classList.replace('card', 'card-clone');
+            clone.style.position = 'fixed';
+            const position = card.getBoundingClientRect();
+            clone.style.left = position.x + 'px';
+            clone.style.top = position.y + 'px';
+            return clone;
+        },
+        start: function (event) {
+            event.preventDefault();
+            const card = this;
+            if (!card.classList.contains('unflipped')) {
+                const clone = dom.drag.createClone(card);
+                dom.drag.mouseData = event;
+                document.onmousemove = dom.drag.move;
+                document.onmouseup = dom.drag.end;
+                document.body.appendChild(clone);
+            }
+        },
+        move: function (event) {
+            event.preventDefault();
+            const clone = document.getElementsByClassName('card-clone')[0];
+            let mouseX = dom.drag.mouse.x, mouseY = dom.drag.mouse.y;
+            dom.drag.mouseData = event;
+            let dx = dom.drag.mouse.x - mouseX, dy = dom.drag.mouse.y - mouseY;
+            const clonePosition = clone.getBoundingClientRect();
+            clone.style.left = (clonePosition.x + dx) + 'px';
+            clone.style.top = (clonePosition.y + dy) + 'px';
+        },
+        end: function () {
+            document.onmousemove = null;
+            document.onmouseup = null;
+            const clones = document.getElementsByClassName('card-clone');
+            for (const clone of clones) {
+                clone.remove();
+            }
+        },
+        set mouseData(mouseEvent) {
+            this.mouse.x = mouseEvent.clientX;
+            this.mouse.y = mouseEvent.clientY;
+        },
+        mouse: {
+            x: null,
+            y: null
         }
     }
 };

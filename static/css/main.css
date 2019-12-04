@@ -74,7 +74,7 @@ body {
     left: 0;
 }
 
-.card, .empty-slot {
+.card, .card-clone, .empty-slot {
     box-sizing: border-box;
     height: 170px;
     width: 120px;
@@ -87,7 +87,7 @@ body {
     z-index: -1;
 }
 
-.card {
+.card, .card-clone {
     border: black solid 3px;
     background: white;
     padding-top: 10px;
