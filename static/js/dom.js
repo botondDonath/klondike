@@ -26,10 +26,7 @@ export const dom = {
             card.classList.add('card', 'unflipped');
             card.dataset.suit = suit;
             card.dataset.rank = rank.toString();
-            const cardHeader = document.createElement('DIV');
-            cardHeader.classList.add('card-header');
-            cardHeader.textContent = `${suit} ${rank}`;
-            card.appendChild(cardHeader);
+            util.createCardHeader(card, suit, rank);
             return card;
         },
         display: function (deck) {
@@ -69,10 +66,7 @@ export const dom = {
                     let suit = flippedCard.dataset.suit;
                     let rank = flippedCard.dataset.rank;
                     if (flippedCard.hasChildNodes() === false) {
-                        const cardHeader = document.createElement('DIV');
-                        cardHeader.classList.add('card-header');
-                        cardHeader.textContent = `${suit} ${rank}`;
-                        flippedCard.appendChild(cardHeader);
+                        util.createCardHeader(flippedCard, suit, rank);
                     }
                 }
             });
@@ -87,7 +81,6 @@ export const dom = {
                 let zIndex = 0;
                 for (let i = flippedCards.length - 1; i >= 0; i--) {
                     let unflippedCard = flippedCards[i];
-
                     unflippedCard.parentNode.removeChild(unflippedCard);
                     unflippedCardsContainer.appendChild(unflippedCard);
                     unflippedCard.style.zIndex = (zIndex--).toString();
