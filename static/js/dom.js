@@ -111,22 +111,26 @@ export const dom = {
             }
         },
         detectTarget: function (clone) {
+            let targetBelow;
             const corners = util.getCorners(clone);
             for (const corner of corners) {
-                let elemBelow = document.elementFromPoint(corner.x, corner.y);
-                if (elemBelow && elemBelow.classList.contains('target') && !clone.classList.contains('over')) {
-                    clone.classList.add('over');
-                    elemBelow.classList.add('active');
-                    return true;
-                } else if (elemBelow && elemBelow.classList.contains('active')) {
-                    return true;
+                const elemBelow = document.elementFromPoint(corner.x, corner.y);
+                if (elemBelow && elemBelow.classList.contains('target')) {
+                    targetBelow = elemBelow;
+                    break;
                 }
             }
-            return false;
+            return targetBelow;
         },
-        deactivateTarget: function (clone) {
-            clone.classList.remove('over');
-            document.querySelector('.active').classList.remove('active');
+        handleCardPassage: function (clone) {
+            const targetCardBelow = dom.drag.detectTarget(clone);
+            if (targetCardBelow && !targetCardBelow.classList.contains('active')) {
+                targetCardBelow.classList.add('active');
+                clone.classList.add('over');
+            } else if (!targetCardBelow && clone.classList.contains('over')) {
+                document.querySelector('.active').classList.remove('active');
+                clone.classList.remove('over');
+            }
         },
         move: function (event) {
             event.preventDefault();
@@ -138,11 +142,7 @@ export const dom = {
             const cloneRect = clone.getBoundingClientRect();
             clone.style.left = (cloneRect.x + dx) + 'px';
             clone.style.top = (cloneRect.y + dy) + 'px';
-
-            const noTargetBelow = !dom.drag.detectTarget(clone);
-            if (noTargetBelow && clone.classList.contains('over')) {
-                dom.drag.deactivateTarget(clone);
-            }
+            dom.drag.handleCardPassage(clone);
         },
         end: function () {
             document.onmousemove = null;
