@@ -71,7 +71,12 @@ export const dom = {
 
                 flippedDeck.appendChild(flippedCard);
                 console.log(flippedDeck);
-
+                flippedCard.classList.remove('unflipped');
+                let suit = flippedCard.dataset.suit;
+                let rank = flippedCard.dataset.rank;
+                const cardHeader = document.createElement('DIV');
+                cardHeader.classList.add('card-header');
+                cardHeader.textContent = `${suit} ${rank}`;
             })
         }
     }
