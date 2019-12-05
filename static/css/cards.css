@@ -53,6 +53,7 @@
 
 .unflipped {
     background-image: url("../images/card-back.jpg");
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     border-color: black;

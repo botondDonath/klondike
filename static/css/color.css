@@ -3,4 +3,5 @@
     --secondary: rgb(195, 200, 255);
     --primary-opaque: rgba(20, 50, 140, .2);
     --card-red: rgb(204, 0, 1);
+    --card-red-opaque: rgba(204, 0, 1, .3);
 }
