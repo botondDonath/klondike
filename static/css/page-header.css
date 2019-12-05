@@ -3,13 +3,16 @@
     height: 110px;
     background-color: var(--page-header);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
 #app-name {
     margin-left: 30px;
-    font-weight: bolder;
-    font-size: 17px;
+}
+
+#app-icon img{
+    height: 90px;
+    margin-right: 30px;
 }
