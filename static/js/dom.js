@@ -136,24 +136,50 @@ export const dom = {
                 });
         },
         starter: {
-            prepareTargets: function (card) {
-                const dragData = {
-                    color: card.dataset.color,
-                    rank: parseInt(card.dataset.rank)
-                };
+            prepareEmptyColumnSlots: function () {
+                Array.from(document.querySelectorAll('.column .empty-slot'))
+                    .filter(slot => !slot.nextElementSibling)
+                    .forEach(target => {
+                        target.classList.add('target');
+                    })
+            },
+            prepareTargetCards: function (dragData) {
                 Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
                     .filter(card =>
+                        !card.nextElementSibling &&
                         card.dataset.color !== dragData.color &&
                         parseInt(card.dataset.rank) === dragData.rank + 1)
                     .forEach(target => {
                         target.classList.add('target');
                     });
+            },
+            prepareSortedPiles: function (dragData) {
+                Array.from(document.querySelectorAll('.sorted-pile'))
+                    .filter(pile => {
+                        const topElement = pile.lastElementChild;
+                        return ((
+                            dragData.rank === 1 && topElement.classList.contains('empty-slot')) || (
+                            topElement.dataset.suit === dragData.suit &&
+                            parseInt(topElement.dataset.rank) === dragData.rank - 1
+                        ))
+                    })
+                    .forEach(pile => {
+                        pile.lastElementChild.classList.add('target');
+                    });
+            },
+            prepareTargets: function (card) {
+                const dragData = {
+                    suit: card.dataset.suit,
+                    color: card.dataset.color,
+                    rank: parseInt(card.dataset.rank)
+                };
                 if (dragData.rank === 13) {
-                    Array.from(document.querySelectorAll('.column .empty-slot'))
-                        .filter(slot => !slot.nextElementSibling)
-                        .forEach(target => {
-                            target.classList.add('target');
-                        })
+                    this.prepareEmptyColumnSlots();
+                } else {
+                    this.prepareTargetCards(dragData);
+                }
+                if (!card.nextElementSibling) {
+                    this.prepareSortedPiles(dragData);
                 }
             },
             createClone: function (card) {
