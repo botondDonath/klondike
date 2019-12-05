@@ -185,7 +185,6 @@ export const dom = {
                 let currentCard = card;
                 while (currentCard) {
                     currentCard.classList.add('dragged');
-                    currentCard.style.opacity = '0';
                     currentCard = currentCard.nextElementSibling;
                 }
             },
@@ -261,7 +260,7 @@ export const dom = {
             resetDraggedCards: function () {
                 Array.from(document.getElementsByClassName('dragged'))
                     .forEach(card => {
-                        card.style.opacity = '100%';
+                        card.style.zIndex = '1';
                         card.classList.remove('dragged');
                     })
             },
