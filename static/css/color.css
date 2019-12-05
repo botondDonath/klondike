@@ -1,7 +1,7 @@
 :root {
-    --primary: rgb(20, 50, 140);
-    --secondary: rgb(195, 200, 255);
-    --primary-opaque: rgba(20, 50, 140, .2);
+    --primary: rgba(83, 186, 107, 0.7);
+    --secondary: rgba(174, 203, 185, 0.51);
+    --primary-opaque: rgba(74, 153, 83, 0.2);
     --card-red: rgb(204, 0, 1);
     --card-red-opaque: rgba(204, 0, 1, .3);
 }
