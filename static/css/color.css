@@ -1,7 +1,7 @@
 :root {
     --page-header: rgba(83, 186, 107, 0.7);
     --card-back: rgb(83, 186, 107);
-    --body: rgba(174, 203, 185, 0.51);
+    --body: rgba(83, 186, 107, 0.5);
     --slots: rgba(83, 186, 107, 0.3);
     --active: rgb(250, 222, 87);
 }

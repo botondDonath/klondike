@@ -8,11 +8,15 @@
 .card, .card-clone {
     border: black solid 3px;
     background: white;
-    padding-top: 10px;
+    /*padding-top: 10px;*/
 }
 
 .card {
     position: relative;
+}
+
+.card img {
+    display: none;
 }
 
 .dragged {
@@ -32,8 +36,8 @@
 }
 
 .empty-slot {
-    background: var(--slots);
-    border: black solid 1px;
+    background-color: var(--slots);
+    border: black solid 2px;
     position: absolute;
     z-index: 0;
 }
@@ -53,12 +57,19 @@
 }
 
 .unflipped {
-    background-image: url("../images/croc-drawing.png");
     background-color: var(--card-back);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100px;
-    border-color: var(--active);
+    border-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unflipped img {
+    display: block;
+    width: 80px;
+    border: white solid 2px;
+    border-radius: 10px;
+    padding: 20px 10px;
 }
 
 .active.empty-slot {

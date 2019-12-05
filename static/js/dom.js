@@ -185,6 +185,7 @@ export const dom = {
             createClone: function (card) {
                 const clone = card.cloneNode(true);
                 clone.classList.replace('card', 'card-clone');
+                clone.querySelector('img').remove();
                 return clone;
             },
             createCloneContainer: function (grabbedCard) {
@@ -217,7 +218,7 @@ export const dom = {
             main: function (event) {
                 event.preventDefault();
                 const grabbedCard = event.target;
-                if (!grabbedCard.classList.contains('unflipped')) {
+                if (!grabbedCard.classList.contains('unflipped') && grabbedCard.classList.contains('card')) {
                     const cloneContainer = this.createCloneContainer(grabbedCard);
                     this.prepareTargets(grabbedCard);
                     this.prepareDocument.call(dom.drag, cloneContainer, event);

@@ -34,10 +34,11 @@ body {
     justify-content: space-between;
     padding: 0 5px;
     pointer-events: none;
+    margin-top: 10px;
 }
 
 .unflipped .card-header {
-    visibility: hidden;
+    display: none;
 }
 
 .suit-label {
