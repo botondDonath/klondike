@@ -142,12 +142,19 @@ export const dom = {
                     rank: parseInt(card.dataset.rank)
                 };
                 Array.from(document.querySelectorAll('.column .card:not(.unflipped):not(.dragged)'))
-                    .filter(card => {
-                        return card.dataset.color !== dragData.color && parseInt(card.dataset.rank) === dragData.rank + 1;
-                    })
+                    .filter(card =>
+                        card.dataset.color !== dragData.color &&
+                        parseInt(card.dataset.rank) === dragData.rank + 1)
                     .forEach(target => {
                         target.classList.add('target');
                     });
+                if (dragData.rank === 13) {
+                    Array.from(document.querySelectorAll('.column .empty-slot'))
+                        .filter(slot => !slot.nextElementSibling)
+                        .forEach(target => {
+                            target.classList.add('target');
+                        })
+                }
             },
             createClone: function (card) {
                 const clone = card.cloneNode(true);
@@ -258,7 +265,7 @@ export const dom = {
                         card.classList.remove('dragged');
                     })
             },
-            resetTargetCards: function () {
+            resetTargets: function () {
                 Array.from(document.querySelectorAll('.target'))
                     .forEach(target => {
                         target.classList.remove('target', 'active');
@@ -278,7 +285,7 @@ export const dom = {
                     this.dropCards(activeTargetCard);
                 }
                 this.resetDraggedCards();
-                this.resetTargetCards();
+                this.resetTargets();
             },
         }
     }

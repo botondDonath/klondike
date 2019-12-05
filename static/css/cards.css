@@ -11,6 +11,10 @@
     padding-top: 10px;
 }
 
+.card {
+    position: relative;
+}
+
 .card-clone {
     pointer-events: none;
 }
@@ -26,7 +30,7 @@
 .empty-slot {
     background: var(--primary-opaque);
     position: absolute;
-    z-index: -1;
+    z-index: 0;
 }
 
 #unflipped .card, #flipped .card {
@@ -48,6 +52,10 @@
     background-repeat: no-repeat;
     background-size: cover;
     border-color: black;
+}
+
+.active.empty-slot {
+    border: var(--card-red) solid 3px;
 }
 
 .active {
