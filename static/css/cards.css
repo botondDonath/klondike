@@ -32,7 +32,8 @@
 }
 
 .empty-slot {
-    background: var(--primary-opaque);
+    background: var(--slots);
+    border: black solid 1px;
     position: absolute;
     z-index: 0;
 }
@@ -52,17 +53,18 @@
 }
 
 .unflipped {
-    background-image: url("../images/card-back.jpg");
+    background-image: url("../images/croc-drawing.png");
+    background-color: var(--card-back);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100px;
     border-color: black;
 }
 
 .active.empty-slot {
-    border: var(--card-red) solid 3px;
+    border: var(--active) solid 3px;
 }
 
 .active {
-    border-color: var(--card-red);
+    border-color: var(--active);
 }

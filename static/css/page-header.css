@@ -1,7 +1,7 @@
 #page-header {
     box-sizing: content-box;
     height: 110px;
-    background-color: var(--primary);
+    background-color: var(--page-header);
     display: flex;
     justify-content: center;
     align-items: center;
