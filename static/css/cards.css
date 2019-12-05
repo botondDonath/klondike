@@ -15,6 +15,13 @@
     position: relative;
 }
 
+.card:not(.unflipped), .card-clone {
+    background-image: url("../images/croc-small.png");
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .card img {
     display: none;
 }
