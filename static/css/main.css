@@ -17,23 +17,32 @@ body {
 
 #board {
     width: 1500px;
-    min-height: 750px;
+    height: 700px;
     margin: 20px auto;
-    padding: 24px;
+    padding: 24px 24px 0 24px;
+    border: black solid 1px;
 }
 
 #board-content {
     margin-top: 30px;
-    height: 550px;
     display: flex;
     justify-content: space-between;
     align-items: start;
+    border: black solid 1px;
 }
 
 .column {
+    box-sizing: border-box;
     width: 120px;
-    max-height: 550px;
-    position: relative;
+    height: 499px;
+    margin-top: -170px;
+    border: black solid 1px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.column.empty {
+    margin-top: 0;
 }
 
 .card-header {

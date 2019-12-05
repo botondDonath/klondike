@@ -8,11 +8,6 @@
 .card, .card-clone {
     border: black solid 3px;
     background: white;
-    /*padding-top: 10px;*/
-}
-
-.card {
-    position: relative;
 }
 
 .card:not(.unflipped), .card-clone {
@@ -45,8 +40,6 @@
 .empty-slot {
     background-color: var(--slots);
     border: black solid 2px;
-    position: absolute;
-    z-index: 0;
 }
 
 #unflipped .card, #flipped .card, .sorted-pile .card {

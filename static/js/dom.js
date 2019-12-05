@@ -137,10 +137,11 @@ export const dom = {
         },
         starter: {
             prepareEmptyColumnSlots: function () {
-                Array.from(document.querySelectorAll('.column .empty-slot'))
-                    .filter(slot => !slot.nextElementSibling)
+                Array.from(document.querySelectorAll('.column-wrapper .empty-slot'))
+                    .filter(slot => !slot.nextElementSibling.hasChildNodes())
                     .forEach(target => {
                         target.classList.add('target');
+                        target.nextElementSibling.classList.add('empty');
                     })
             },
             prepareTargetCards: function (dragData) {
@@ -322,12 +323,19 @@ export const dom = {
                 Array.from(document.querySelectorAll('.target'))
                     .forEach(target => {
                         target.classList.remove('target', 'active');
+                        if (target.parentNode.classList.contains('column-wrapper')) {
+                            target.nextElementSibling.classList.remove('empty');
+                        }
                     })
             },
             dropCards: function (target) {
                 document.querySelectorAll('.dragged')
                     .forEach(card => {
-                        target.parentNode.appendChild(card);
+                        if (target.parentNode.classList.contains('column-wrapper')) {
+                            target.nextElementSibling.appendChild(card);
+                        } else {
+                            target.parentNode.appendChild(card);
+                        }
                     });
             },
             main: function () {
