@@ -243,17 +243,15 @@ export const dom = {
                     }
                 }
             },
-            detectTarget: function (cloneContainer) {
-                let targetBelow;
-                const corners = util.getCorners(cloneContainer);
-                for (const corner of corners) {
+            detectTargets: function (corners) {
+                const targets = [];
+                corners.forEach(corner => {
                     const elemBelow = document.elementFromPoint(corner.x, corner.y);
                     if (elemBelow && elemBelow.classList.contains('target')) {
-                        targetBelow = elemBelow;
-                        break;
+                        targets.push(elemBelow);
                     }
-                }
-                return targetBelow;
+                });
+                return targets;
             },
             glide: function (cloneContainer, event) {
                 const vector = this.mouse.getVector(event);
@@ -261,13 +259,40 @@ export const dom = {
                 cloneContainer.style.left = (cloneContainerRect.x + vector.dx) + 'px';
                 cloneContainer.style.top = (cloneContainerRect.y + vector.dy) + 'px';
             },
+            selectClosestTarget: function (targets) {
+                let closestTarget, distance, minDistance;
+                const mouse = this.mouse;
+                for (const target of targets) {
+                    const rect = target.getBoundingClientRect();
+                    distance = Math.hypot(mouse.x - rect.x, mouse.y - rect.y);
+                    if (!minDistance) {
+                        minDistance = distance;
+                        closestTarget = target;
+                    } else if (distance < minDistance) {
+                        minDistance = distance;
+                        closestTarget = target;
+                    }
+                }
+                return closestTarget;
+            },
             handleContact: function (cloneContainer) {
-                const targetCardBelow = this.detectTarget(cloneContainer);
-                if (targetCardBelow && !targetCardBelow.classList.contains('active')) {
-                    targetCardBelow.classList.add('active');
+                const corners = util.getCorners(cloneContainer);
+                const targets = this.detectTargets(corners);
+                const activeTarget = document.querySelector('.active');
+                let newActiveTarget;
+                if (targets.length === 1) {
+                    newActiveTarget = targets[0];
+                } else if (targets.length) {
+                    newActiveTarget = this.selectClosestTarget(targets);
+                }
+                if (activeTarget && newActiveTarget && newActiveTarget !== activeTarget) {
+                    activeTarget.classList.remove('active');
+                    newActiveTarget.classList.add('active');
+                } else if (!activeTarget && newActiveTarget) {
+                    newActiveTarget.classList.add('active');
                     cloneContainer.classList.add('over');
-                } else if (!targetCardBelow && cloneContainer.classList.contains('over')) {
-                    document.querySelector('.active').classList.remove('active');
+                } else if (activeTarget && !newActiveTarget) {
+                    activeTarget.classList.remove('active');
                     cloneContainer.classList.remove('over');
                 }
             },
@@ -283,10 +308,12 @@ export const dom = {
                 document.onmousemove = null;
                 document.onmouseup = null;
             },
-            resetDraggedCards: function () {
+            resetDraggedCards: function (isDrop) {
                 Array.from(document.getElementsByClassName('dragged'))
                     .forEach(card => {
-                        card.style.zIndex = '1';
+                        if (isDrop) {
+                            card.style.zIndex = '1';
+                        }
                         card.classList.remove('dragged');
                     })
             },
@@ -309,7 +336,7 @@ export const dom = {
                 if (activeTargetCard) {
                     this.dropCards(activeTargetCard);
                 }
-                this.resetDraggedCards();
+                this.resetDraggedCards(Boolean(activeTargetCard));
                 this.resetTargets();
             },
         }
