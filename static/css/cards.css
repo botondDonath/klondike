@@ -58,7 +58,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100px;
-    border-color: black;
+    border-color: var(--active);
 }
 
 .active.empty-slot {
