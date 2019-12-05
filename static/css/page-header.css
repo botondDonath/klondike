@@ -10,9 +10,11 @@
 
 #app-name {
     margin-left: 30px;
+    pointer-events: none;
 }
 
 #app-icon img{
     height: 90px;
     margin-right: 30px;
+    pointer-events: none;
 }
