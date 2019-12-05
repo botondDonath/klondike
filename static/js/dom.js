@@ -75,7 +75,11 @@ export const dom = {
             this.flipCardFromUnflippedDeck();
             this.unflipTheFlippedDeck();
         },
-        flipCard: function () {
+        flipCardInUnflippedDeck: function (flippedDeck, flippedCard) {
+            flippedCard.classList.replace('unflipped', 'flipped');
+            flippedDeck.appendChild(flippedCard);
+        },
+        flipCardInColumn: function () {
             if (
                 this.classList.contains('unflipped') &&
                 !this.nextElementSibling &&
@@ -85,7 +89,7 @@ export const dom = {
             }
         },
         handleCardsInColumns: function () {
-            const flipCard = this.flipCard;
+            const flipCard = this.flipCardInColumn;
             document.querySelectorAll('.card')
                 .forEach(function (card) {
                     card.addEventListener('click', flipCard.bind(card));
@@ -99,7 +103,7 @@ export const dom = {
                 if (unflippedDeck.querySelector('.card')) {
                     let flippedCard = unflippedDeck.lastChild;
                     flippedCard.style.zIndex = (zIndexFlippedCards++).toString();
-                    util.flipCard(flippedDeck, flippedCard);
+                    dom.flipper.flipCardInUnflippedDeck(flippedDeck, flippedCard);
                     if (!unflippedDeck.querySelector('.card')) {
                         zIndexFlippedCards = 0;
                     }

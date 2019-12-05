@@ -5,10 +5,6 @@ export const util = {
             [array[i], array[j]] = [array[j], array[i]];
         }
     },
-    flipCard: function(flippedDeck, flippedCard) {
-        flippedCard.classList.replace('unflipped', 'flipped');
-        flippedDeck.appendChild(flippedCard);
-    },
     getCorners: function (elem) {
         const rect = elem.getBoundingClientRect();
         return [
