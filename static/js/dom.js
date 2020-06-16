@@ -179,7 +179,7 @@ export const dom = {
                 } else {
                     this.prepareTargetCards(dragData);
                 }
-                if (!card.nextElementSibling) {
+                if (card.nextElementSibling == null) {
                     this.prepareSortedPiles(dragData);
                 }
             },
