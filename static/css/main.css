@@ -1,73 +1,83 @@
-:root {
-    --green: rgb(74,153,83);
-    --light-green: rgb(191, 203, 147);
+@import "color.css";
+@import "page-header.css";
+@import "board-header.css";
+@import "cards.css";
+
+* {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 body {
     margin: 0;
-    background-color: var(--light-green);
-}
-
-#page-header {
-    height: 80px;
-    background-color: var(--green);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-#app-name {
-    margin-left: 30px;
-    font-weight: bold;
-    font-size: 36px;
+    background-color: var(--body);
 }
 
 #board {
-    border: black solid 2px;
-    width: 1600px;
-    height: 750px;
+    width: 1200px;
+    height: 700px;
     margin: 20px auto;
-    padding: 20px;
-}
-
-#board-header {
-    display: flex;
-    justify-content: space-between;
-    height: 150px;
-}
-
-#board-header-right, #board-header-left {
-    display: flex;
-    justify-content: space-between;
-}
-
-#board-header-left {
-    width: 330px;
-}
-
-#board-header-right {
-    width: 700px;
-}
-
-#unflipped, #flipped {
-    border: black solid 1px;
-    width: 120px;
-}
-
-.sorted-pile {
-    border: black solid 1px;
-    width: 120px;
+    padding: 24px 24px 0 24px;
 }
 
 #board-content {
-    border: black solid 2px;
     margin-top: 30px;
-    height: 550px;
     display: flex;
     justify-content: space-between;
+    align-items: start;
 }
 
 .column {
+    box-sizing: border-box;
     width: 120px;
-    border: black solid 1px;
+    height: 499px;
+    margin-top: -170px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.column.empty {
+    margin-top: 0;
+    height: 170px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+    pointer-events: none;
+    margin-top: 10px;
+}
+
+.unflipped .card-header {
+    display: none;
+}
+
+.suit-label {
+    width: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.rank-label {
+    font-weight: bold;
+}
+
+.spades {
+    background-image: url("../images/spades.png");
+}
+
+.clubs {
+    background-image: url("../images/clubs.png");
+}
+
+.hearts {
+    background-image: url("../images/hearts.png");
+}
+
+.diamonds {
+    background-image: url("../images/diamonds.png");
 }

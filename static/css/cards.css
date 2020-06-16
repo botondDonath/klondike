@@ -1,0 +1,81 @@
+.card, .card-clone, .empty-slot {
+    box-sizing: border-box;
+    height: 170px;
+    width: 120px;
+    border-radius: 10px;
+}
+
+.card, .card-clone {
+    border: black solid 3px;
+    background: white;
+}
+
+.card:not(.unflipped), .card-clone {
+    background-image: url("../images/croc-small.png");
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card img {
+    display: none;
+}
+
+.dragged {
+    visibility: hidden;
+}
+
+.card-clone {
+    pointer-events: none;
+}
+
+#clone-container {
+    z-index: 999;
+    position: fixed;
+    border: none;
+    padding-bottom: 130px;
+    border-radius: 10px;
+}
+
+.empty-slot {
+    background-color: var(--slots);
+    border: black solid 2px;
+}
+
+#unflipped .card, #flipped .card, .sorted-pile .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.column .card, .card-clone {
+    margin-bottom: -130px;
+}
+
+.column .card:last-child {
+    margin-bottom: 0;
+}
+
+.unflipped {
+    background-color: var(--card-back);
+    border-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unflipped img {
+    display: block;
+    width: 80px;
+    border: white solid 2px;
+    border-radius: 10px;
+    padding: 20px 10px;
+}
+
+.active.empty-slot {
+    border: var(--active) solid 3px;
+}
+
+.active {
+    border-color: var(--active);
+}

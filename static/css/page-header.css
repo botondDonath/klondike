@@ -1,0 +1,20 @@
+#page-header {
+    box-sizing: content-box;
+    height: 110px;
+    background-color: var(--page-header);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#app-name {
+    margin-left: 30px;
+    pointer-events: none;
+}
+
+#app-icon img{
+    height: 90px;
+    margin-right: 30px;
+    pointer-events: none;
+}

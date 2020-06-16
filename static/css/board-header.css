@@ -1,0 +1,19 @@
+#board-header {
+    display: flex;
+    justify-content: space-between;
+    height: 170px;
+}
+
+#unflipped, #flipped, #invisible, .sorted-pile {
+    width: 120px;
+}
+
+#unflipped, #flipped, .sorted-pile {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+#invisible {
+    visibility: hidden;
+}
